@@ -1,1 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>WeddingOS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+
+    margin:0;
+    background:#0d1117;
+    color:#58a6ff;
+
+    font-family:"JetBrains Mono",monospace;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-height:100vh;
+
+}
+
+#terminal{
+
+    width:min(900px,90%);
+    background:#161b22;
+
+    border-radius:10px;
+
+    border:1px solid #30363d;
+
+    padding:35px;
+
+    box-shadow:0 0 40px rgba(0,0,0,.5);
+
+}
+
+#header{
+
+    color:white;
+    margin-bottom:30px;
+    font-size:24px;
+
+}
+
+.line{
+
+    opacity:0;
+    transform:translateY(8px);
+
+    transition:.5s;
+
+    margin:10px 0;
+
+}
+
+.show{
+
+    opacity:1;
+    transform:translateY(0);
+
+}
+
+.ok{
+
+    color:#3fb950;
+
+}
+
+.progress{
+
+    width:100%;
+    height:24px;
+
+    border:1px solid #30363d;
+
+    margin-top:8px;
+    margin-bottom:25px;
+
+}
+
+.fill{
+
+    width:0%;
+
+    height:100%;
+
+    background:#3fb950;
+
+    transition:width 2s linear;
+
+}
+
+#message{
+
+    margin-top:50px;
+
+    display:none;
+
+    color:white;
+
+    animation:fade 2s forwards;
+
+}
+
+.commit{
+
+    margin-top:30px;
+
+    border-top:1px solid #30363d;
+
+    padding-top:20px;
+
+    color:#8b949e;
+
+    white-space:pre-line;
+
+}
+
+@keyframes fade{
+
+from{opacity:0;}
+
+to{opacity:1;}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="terminal">
+
+<div id="header">WeddingOS v1.0.0</div>
+
+<div class="line">> Initializing...</div>
+
+<div class="line"><span class="ok">[ OK ]</span> Loading Love module</div>
+<div class="line"><span class="ok">[ OK ]</span> Loading Trust module</div>
+<div class="line"><span class="ok">[ OK ]</span> Loading Respect module</div>
+<div class="line"><span class="ok">[ OK ]</span> Loading Coffee module</div>
+<div class="line"><span class="ok">[ OK ]</span> Loading Humor module</div>
+
+<div class="line">
+
+Scanning compatibility...
+
+<div class="progress">
+<div id="bar1" class="fill"></div>
+</div>
+
+</div>
+
+<div class="line">
+
+No merge conflicts detected.
+
+</div>
+
+<div class="line">
+
+Deploying marriage...
+
+<div class="progress">
+<div id="bar2" class="fill"></div>
+</div>
+
+</div>
+
+<div class="line">
+
+<span class="ok">✔ Deployment successful</span>
+
+</div>
+
+<div id="message">
+
+<h2>❤️ Congratulations ❤️</h2>
+
+<p>
+
+Dear Kriszti & Gabor,
+
+</p>
+
+<p>
+
+May your lives always compile without errors,
+your coffee never run out,
+and your love keep growing with every new commit.
+
+</p>
+
+<p>
+
+Wishing you a lifetime of happiness.
+
+</p>
+
+<div class="commit">
+
+commit 1.0.0
+
+Author: Friends
+
+feat: happily ever after
+
+Status: Merged Successfully
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const lines=document.querySelectorAll(".line");
+
+let delay=500;
+
+lines.forEach((line,i)=>{
+
+    setTimeout(()=>{
+
+        line.classList.add("show");
+
+    },delay);
+
+    delay+=800;
+
+});
+
+setTimeout(()=>{
+
+    document.getElementById("bar1").style.width="100%";
+
+},5200);
+
+setTimeout(()=>{
+
+    document.getElementById("bar2").style.width="100%";
+
+},8600);
+
+setTimeout(()=>{
+
+    document.getElementById("message").style.display="block";
+
+},11500);
+
+</script>
+
+</body>
+</html>
