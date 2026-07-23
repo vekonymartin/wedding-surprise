@@ -8,7 +8,7 @@
 // ── Configuration ────────────────────────────────────────────────────────────
 const CONFIG = {
   names:      "Kriszti & Gabor",
-  commitDate: "2026-09-12",
+  commitDate: "2026-07-25",
   author:     "Your Friends",
   typeDelay:  28,          // ms per character in typewriter
   lineGap:    220,         // ms between lines appearing
