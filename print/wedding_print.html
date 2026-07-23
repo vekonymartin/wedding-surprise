@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>wedding.py — print</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+  @page {
+    size: A4 portrait;
+    margin: 18mm 16mm 16mm 16mm;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 210mm;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: "JetBrains Mono", Consolas, monospace;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 100%;
+    min-height: 267mm;       /* A4 - top/bottom margins */
+    display: flex;
+    flex-direction: column;
+    background: #0d1117;
+    padding: 0;
+  }
+
+  /* ── window chrome ── */
+  .chrome {
+    background: #21262d;
+    border-radius: 10px 10px 0 0;
+    border: 1px solid #30363d;
+    border-bottom: none;
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .dot { width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; }
+  .red    { background: #ff5f57; }
+  .yellow { background: #febc2e; }
+  .green  { background: #28c840; }
+
+  .wintitle {
+    flex: 1;
+    text-align: center;
+    color: #8b949e;
+    font-size: 11px;
+    margin-right: 45px; /* optical centering past the dots */
+  }
+
+  /* ── code block ── */
+  .codebox {
+    flex: 1;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 22px 26px 26px;
+    overflow: hidden;
+  }
+
+  pre {
+    font-family: "JetBrains Mono", Consolas, monospace;
+    font-size: 11.4px;
+    line-height: 1.72;
+    white-space: pre;
+    tab-size: 4;
+  }
+
+  /* ── syntax colours (VS Code Dark+) ── */
+  .c   { color: #6e7681; font-style: italic; }   /* comment  */
+  .kw  { color: #ff7b72; }                        /* keyword  */
+  .fn  { color: #d2a8ff; }                        /* function */
+  .st  { color: #a5d6ff; }                        /* string   */
+  .nm  { color: #79c0ff; }                        /* number / constant */
+  .op  { color: #c9d1d9; }                        /* operator */
+  .bi  { color: #ffa657; }                        /* builtin  */
+  .var { color: #c9d1d9; }                        /* default  */
+  .ln  { color: #30363d; user-select: none; margin-right: 18px; display: inline-block; width: 22px; text-align: right; }
+
+  /* ── footer ── */
+  .footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #30363d;
+    text-align: center;
+  }
+
+  .footer-main {
+    font-size: 12.5px;
+    color: #c9d1d9;
+    letter-spacing: .5px;
+  }
+
+  .footer-sub {
+    font-size: 10.5px;
+    color: #6e7681;
+    margin-top: 4px;
+  }
+
+  .footer-cmd {
+    display: inline-block;
+    margin-top: 7px;
+    font-size: 12px;
+    color: #3fb950;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 5px;
+    padding: 3px 14px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- window chrome -->
+  <div class="chrome">
+    <div class="dot red"></div>
+    <div class="dot yellow"></div>
+    <div class="dot green"></div>
+    <span class="wintitle">wedding.py — Python 3</span>
+  </div>
+
+  <!-- code -->
+  <div class="codebox">
+    <pre><span class="ln"> 1</span><span class="c"># Nothing interesting here.</span>
+<span class="ln"> 2</span><span class="c"># Just a simple QR generator.</span>
+<span class="ln"> 3</span>
+<span class="ln"> 4</span><span class="kw">import</span> <span class="var">sys, time, gzip, base64, binascii, qrcode</span>
+<span class="ln"> 5</span>
+<span class="ln"> 6</span><span class="var">PAYLOAD </span><span class="op">=</span> <span class="op">(</span>
+<span class="ln"> 7</span>    <span class="st">"0a76310b030f3a2d1b2f2d016d7a312d0911292d36360e1a0e72340c383169303807"</span>
+<span class="ln"> 8</span>    <span class="st">"723109312c0f727234120e0f292d16260e0e380c2134167273083b213a0e733b72370e"</span>
+<span class="ln"> 9</span>    <span class="st">"112d2d3b2b3a0d731321037731307a3a2803030303037f"</span>
+<span class="ln">10</span><span class="op">)</span>
+<span class="ln">11</span>
+<span class="ln">12</span><span class="var">K </span><span class="op">=</span> <span class="nm">0x42</span>
+<span class="ln">13</span><span class="var">G, R, B, D </span><span class="op">=</span> <span class="st">"\033[32m"</span><span class="op">,</span> <span class="st">"\033[0m"</span><span class="op">,</span> <span class="st">"\033[1m"</span><span class="op">,</span> <span class="st">"\033[2m"</span>
+<span class="ln">14</span>
+<span class="ln">15</span>
+<span class="ln">16</span><span class="kw">def</span> <span class="fn">true_love</span><span class="op">(</span><span class="var">p</span><span class="op">):</span>
+<span class="ln">17</span>    <span class="kw">return</span> <span class="var">gzip</span><span class="op">.</span><span class="fn">decompress</span><span class="op">(</span>
+<span class="ln">18</span>        <span class="var">base64</span><span class="op">.</span><span class="fn">b64decode</span><span class="op">(</span><span class="bi">bytes</span><span class="op">(</span><span class="var">b </span><span class="op">^</span> <span class="var">K </span><span class="kw">for</span> <span class="var">b </span><span class="kw">in</span> <span class="var">binascii</span><span class="op">.</span><span class="fn">unhexlify</span><span class="op">(</span><span class="var">p</span><span class="op">)))</span>
+<span class="ln">19</span>    <span class="op">).</span><span class="fn">decode</span><span class="op">()</span>
+<span class="ln">20</span>
+<span class="ln">21</span>
+<span class="ln">22</span><span class="kw">def</span> <span class="fn">_bar</span><span class="op">(</span><span class="var">label</span><span class="op">,</span> <span class="var">dur</span><span class="op">=</span><span class="nm">1.8</span><span class="op">,</span> <span class="var">n</span><span class="op">=</span><span class="nm">40</span><span class="op">):</span>
+<span class="ln">23</span>    <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">write</span><span class="op">(</span><span class="kw">f</span><span class="st">"\n  {label}\n  ["</span><span class="op">);</span> <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">flush</span><span class="op">()</span>
+<span class="ln">24</span>    <span class="kw">for</span> <span class="var">_ </span><span class="kw">in</span> <span class="bi">range</span><span class="op">(</span><span class="var">n</span><span class="op">):</span>
+<span class="ln">25</span>        <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="var">dur </span><span class="op">/</span> <span class="var">n</span><span class="op">);</span> <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">write</span><span class="op">(</span><span class="st">"█"</span><span class="op">);</span> <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">flush</span><span class="op">()</span>
+<span class="ln">26</span>    <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">write</span><span class="op">(</span><span class="st">"] 100%\n"</span><span class="op">)</span>
+<span class="ln">27</span>
+<span class="ln">28</span>
+<span class="ln">29</span><span class="kw">def</span> <span class="fn">_type</span><span class="op">(</span><span class="var">text</span><span class="op">,</span> <span class="var">d</span><span class="op">=</span><span class="nm">.025</span><span class="op">):</span>
+<span class="ln">30</span>    <span class="kw">for</span> <span class="var">ch </span><span class="kw">in</span> <span class="var">text</span><span class="op">:</span>
+<span class="ln">31</span>        <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">write</span><span class="op">(</span><span class="var">ch</span><span class="op">);</span> <span class="var">sys</span><span class="op">.</span><span class="var">stdout</span><span class="op">.</span><span class="fn">flush</span><span class="op">();</span> <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="var">d</span><span class="op">)</span>
+<span class="ln">32</span>    <span class="bi">print</span><span class="op">()</span>
+<span class="ln">33</span>
+<span class="ln">34</span>
+<span class="ln">35</span><span class="kw">def</span> <span class="fn">_ok</span><span class="op">(</span><span class="var">msg</span><span class="op">):</span> <span class="bi">print</span><span class="op">(</span><span class="kw">f</span><span class="st">"\n{G}  ✔ {msg}{R}"</span><span class="op">)</span>
+<span class="ln">36</span>
+<span class="ln">37</span>
+<span class="ln">38</span><span class="kw">def</span> <span class="fn">main</span><span class="op">():</span>
+<span class="ln">39</span>    <span class="bi">print</span><span class="op">(</span><span class="kw">f</span><span class="st">"\n{B}  WeddingOS — surprise package{R}"</span><span class="op">)</span>
+<span class="ln">40</span>    <span class="bi">print</span><span class="op">(</span><span class="kw">f</span><span class="st">"{D}  {'─' * 42}{R}\n"</span><span class="op">)</span>
+<span class="ln">41</span>    <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="nm">.3</span><span class="op">);</span>  <span class="fn">_type</span><span class="op">(</span><span class="st">"  Initializing..."</span><span class="op">)</span>
+<span class="ln">42</span>    <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="nm">.2</span><span class="op">);</span>  <span class="fn">_type</span><span class="op">(</span><span class="st">"  Loading crypto engine..."</span><span class="op">)</span>
+<span class="ln">43</span>    <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="nm">.25</span><span class="op">);</span> <span class="fn">_type</span><span class="op">(</span><span class="st">"  Searching payload..."</span><span class="op">)</span>
+<span class="ln">44</span>    <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="nm">.4</span><span class="op">);</span>  <span class="fn">_ok</span><span class="op">(</span><span class="st">"Payload found."</span><span class="op">)</span>
+<span class="ln">45</span>    <span class="fn">_bar</span><span class="op">(</span><span class="st">"Decrypting"</span><span class="op">,</span> <span class="nm">1.6</span><span class="op">);</span> <span class="var">time</span><span class="op">.</span><span class="fn">sleep</span><span class="op">(</span><span class="nm">.2</span><span class="op">);</span> <span class="fn">_ok</span><span class="op">(</span><span class="st">"Integrity verified."</span><span class="op">)</span>
+<span class="ln">46</span>    <span class="bi">print</span><span class="op">();</span> <span class="fn">_type</span><span class="op">(</span><span class="st">"  Generating QR..."</span><span class="op">);</span> <span class="fn">_bar</span><span class="op">(</span><span class="st">"Encoding"</span><span class="op">,</span> <span class="nm">1.2</span><span class="op">)</span>
+<span class="ln">47</span>
+<span class="ln">48</span>    <span class="var">url </span><span class="op">=</span> <span class="fn">true_love</span><span class="op">(</span><span class="var">PAYLOAD</span><span class="op">)</span>
+<span class="ln">49</span>    <span class="var">qr  </span><span class="op">=</span> <span class="var">qrcode</span><span class="op">.</span><span class="fn">QRCode</span><span class="op">(</span>
+<span class="ln">50</span>        <span class="var">error_correction</span><span class="op">=</span><span class="var">qrcode</span><span class="op">.</span><span class="var">constants</span><span class="op">.</span><span class="var">ERROR_CORRECT_H</span><span class="op">,</span>
+<span class="ln">51</span>        <span class="var">box_size</span><span class="op">=</span><span class="nm">12</span><span class="op">,</span> <span class="var">border</span><span class="op">=</span><span class="nm">4</span><span class="op">,</span>
+<span class="ln">52</span>    <span class="op">)</span>
+<span class="ln">53</span>    <span class="var">qr</span><span class="op">.</span><span class="fn">add_data</span><span class="op">(</span><span class="var">url</span><span class="op">);</span> <span class="var">qr</span><span class="op">.</span><span class="fn">make</span><span class="op">(</span><span class="var">fit</span><span class="op">=</span><span class="kw">True</span><span class="op">)</span>
+<span class="ln">54</span>    <span class="var">qr</span><span class="op">.</span><span class="fn">make_image</span><span class="op">(</span><span class="var">fill_color</span><span class="op">=</span><span class="st">"#0d1117"</span><span class="op">,</span> <span class="var">back_color</span><span class="op">=</span><span class="st">"#c9d1d9"</span><span class="op">).</span><span class="fn">save</span><span class="op">(</span><span class="st">"surprise.png"</span><span class="op">)</span>
+<span class="ln">55</span>
+<span class="ln">56</span>    <span class="fn">_ok</span><span class="op">(</span><span class="st">"QR successfully generated."</span><span class="op">)</span>
+<span class="ln">57</span>    <span class="bi">print</span><span class="op">(</span><span class="kw">f</span><span class="st">"\n  \033[34m→  surprise.png{R}\n{D}  Scan to open the surprise.{R}\n"</span><span class="op">)</span>
+<span class="ln">58</span>
+<span class="ln">59</span>
+<span class="ln">60</span><span class="kw">if</span> <span class="var">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span><span class="op">:</span>
+<span class="ln">61</span>    <span class="fn">main</span><span class="op">()</span>
+</pre>
+  </div>
+
+  <!-- footer -->
+  <div class="footer">
+    <div class="footer-main">Run this script to reveal the surprise.</div>
+    <div class="footer-sub">Requires Python 3 · pip install qrcode[pil]</div>
+    <div class="footer-cmd">python wedding.py</div>
+  </div>
+
+</div>
+</body>
+</html>
