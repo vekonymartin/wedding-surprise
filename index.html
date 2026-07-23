@@ -1,69 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>WeddingOS</title>
 
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
 body{
 
-    margin:0;
-    background:#0d1117;
-    color:#58a6ff;
+    width:100%;
+    height:100%;
 
-    font-family:"JetBrains Mono",monospace;
+    overflow:hidden;
+
+    background:#0d1117;
+
+    font-family:
+        Consolas,
+        "JetBrains Mono",
+        monospace;
+
+    color:#c9d1d9;
+
+}
+
+canvas{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:0;
+
+    opacity:.08;
+
+}
+
+#container{
+
+    position:relative;
+
+    z-index:5;
+
+    width:100%;
+    height:100%;
 
     display:flex;
+
     justify-content:center;
     align-items:center;
-
-    min-height:100vh;
 
 }
 
 #terminal{
 
-    width:min(900px,90%);
-    background:#161b22;
+    width:min(950px,92vw);
 
-    border-radius:10px;
+    background:#161b22;
 
     border:1px solid #30363d;
 
-    padding:35px;
+    border-radius:12px;
 
-    box-shadow:0 0 40px rgba(0,0,0,.5);
+    overflow:hidden;
+
+    box-shadow:
+
+        0 25px 70px rgba(0,0,0,.65);
 
 }
 
-#header{
+#titlebar{
 
-    color:white;
-    margin-bottom:30px;
-    font-size:24px;
+    height:42px;
+
+    background:#21262d;
+
+    border-bottom:1px solid #30363d;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 15px;
+
+}
+
+.dot{
+
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+    margin-right:8px;
+
+}
+
+.red{
+
+    background:#ff5f57;
+
+}
+
+.yellow{
+
+    background:#febc2e;
+
+}
+
+.green{
+
+    background:#28c840;
+
+}
+
+#title{
+
+    margin-left:15px;
+
+    color:#8b949e;
+
+    font-size:14px;
+
+}
+
+#content{
+
+    padding:30px;
+
+    min-height:600px;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    white-space:pre-wrap;
 
 }
 
 .line{
 
     opacity:0;
+
     transform:translateY(8px);
 
-    transition:.5s;
-
-    margin:10px 0;
+    transition:.45s;
 
 }
 
-.show{
+.visible{
 
     opacity:1;
+
     transform:translateY(0);
+
+}
+
+.prompt{
+
+    color:#58a6ff;
 
 }
 
@@ -73,15 +180,33 @@ body{
 
 }
 
+.warn{
+
+    color:#d29922;
+
+}
+
+.error{
+
+    color:#f85149;
+
+}
+
 .progress{
 
     width:100%;
+
     height:24px;
+
+    margin-top:10px;
+
+    margin-bottom:20px;
 
     border:1px solid #30363d;
 
-    margin-top:8px;
-    margin-bottom:25px;
+    border-radius:4px;
+
+    overflow:hidden;
 
 }
 
@@ -91,43 +216,155 @@ body{
 
     height:100%;
 
-    background:#3fb950;
+    background:
 
-    transition:width 2s linear;
+        linear-gradient(
+            90deg,
+            #238636,
+            #3fb950
+        );
 
 }
 
 #message{
 
-    margin-top:50px;
+    position:absolute;
 
-    display:none;
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    background:#0d1117;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:1.5s;
+
+}
+
+#message.show{
+
+    opacity:1;
+
+}
+
+#card{
+
+    width:min(850px,90vw);
+
+    background:#161b22;
+
+    border-radius:12px;
+
+    border:1px solid #30363d;
+
+    padding:50px;
+
+    box-shadow:
+
+        0 25px 60px rgba(0,0,0,.5);
+
+}
+
+#card h1{
+
+    text-align:center;
 
     color:white;
 
-    animation:fade 2s forwards;
+    margin-bottom:30px;
+
+    font-size:46px;
 
 }
 
-.commit{
+#letter{
 
-    margin-top:30px;
+    font-size:20px;
+
+    line-height:2;
+
+}
+
+#commit{
+
+    margin-top:45px;
+
+    padding-top:25px;
 
     border-top:1px solid #30363d;
 
-    padding-top:20px;
-
     color:#8b949e;
 
-    white-space:pre-line;
+    font-size:16px;
+
+    white-space:pre-wrap;
 
 }
 
-@keyframes fade{
+.cursor{
 
-from{opacity:0;}
+    display:inline-block;
 
-to{opacity:1;}
+    width:10px;
+
+    background:white;
+
+    animation:blink 1s infinite;
+
+}
+
+@keyframes blink{
+
+0%,50%{
+
+opacity:1;
+
+}
+
+51%,100%{
+
+opacity:0;
+
+}
+
+}
+
+@media(max-width:700px){
+
+#content{
+
+    font-size:15px;
+
+    min-height:520px;
+
+}
+
+#card{
+
+    padding:30px;
+
+}
+
+#card h1{
+
+    font-size:34px;
+
+}
+
+#letter{
+
+    font-size:17px;
+
+}
 
 }
 
@@ -137,29 +374,100 @@ to{opacity:1;}
 
 <body>
 
+<canvas id="matrix"></canvas>
+
+<div id="container">
+
 <div id="terminal">
 
-<div id="header">WeddingOS v1.0.0</div>
+<div id="titlebar">
 
-<div class="line">> Initializing...</div>
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
 
-<div class="line"><span class="ok">[ OK ]</span> Loading Love module</div>
-<div class="line"><span class="ok">[ OK ]</span> Loading Trust module</div>
-<div class="line"><span class="ok">[ OK ]</span> Loading Respect module</div>
-<div class="line"><span class="ok">[ OK ]</span> Loading Coffee module</div>
-<div class="line"><span class="ok">[ OK ]</span> Loading Humor module</div>
+<div id="title">
+WeddingOS v2.0
+</div>
+
+</div>
+
+<div id="content">
+
+<div class="line prompt">$ ./deploy_marriage.sh</div>
+
+<div class="line"></div>
+
+<div class="line">Initializing WeddingOS...</div>
+
+<div class="line">Loading crypto engine...</div>
+
+<div class="line">Loading relationship modules...</div>
+
+<div class="line ok">✔ Love module loaded</div>
+
+<div class="line ok">✔ Trust module loaded</div>
+
+<div class="line ok">✔ Respect module loaded</div>
+
+<div class="line ok">✔ Humor module loaded</div>
+
+<div class="line ok">✔ Coffee dependency satisfied</div>
+
+<div class="line"></div>
+
+<div class="line">Searching encrypted payload...</div>
+
+<div class="line ok">Payload located.</div>
+
+<div class="line"></div>
 
 <div class="line">
 
-Scanning compatibility...
+Decrypting payload...
 
 <div class="progress">
-<div id="bar1" class="fill"></div>
+
+<div
+class="fill"
+id="decryptBar">
+
 </div>
+
+</div>
+
+</div>
+
+<div class="line ok">
+
+Payload decrypted successfully.
 
 </div>
 
 <div class="line">
+
+Checking compatibility...
+
+<div class="progress">
+
+<div
+class="fill"
+id="compatibilityBar">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="line ok">
+
+Compatibility:
+99.9999998%
+
+</div>
+
+<div class="line ok">
 
 No merge conflicts detected.
 
@@ -170,20 +478,52 @@ No merge conflicts detected.
 Deploying marriage...
 
 <div class="progress">
-<div id="bar2" class="fill"></div>
+
+<div
+class="fill"
+id="deployBar">
+
 </div>
+
+</div>
+
+</div>
+
+<div class="line ok">
+
+Deployment completed.
 
 </div>
 
 <div class="line">
 
-<span class="ok">✔ Deployment successful</span>
+Launching happily_ever_after()
+
+</div>
+
+<div class="line">
+
+Success.
+
+<span class="cursor"></span>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 <div id="message">
 
-<h2>❤️ Congratulations ❤️</h2>
+<div id="card">
+
+<h1>
+❤️ Congratulations ❤️
+</h1>
+
+<div id="letter">
 
 <p>
 
@@ -191,29 +531,47 @@ Dear Kriszti & Gabor,
 
 </p>
 
+<br>
+
 <p>
 
-May your lives always compile without errors,
+Today you successfully merged two beautiful branches into one shared future.
+
+May your life always compile without errors,
 your coffee never run out,
-and your love keep growing with every new commit.
+and every challenge become just another solved bug.
 
 </p>
+
+<br>
 
 <p>
 
-Wishing you a lifetime of happiness.
+Thank you for letting us witness the biggest deployment of your lives.
 
 </p>
 
-<div class="commit">
+<br>
 
-commit 1.0.0
+<p>
 
-Author: Friends
+We wish you endless happiness,
+countless adventures,
+and a lifetime full of successful commits.
+
+</p>
+
+</div>
+
+<div id="commit">
+
+commit 2026.09.12
+
+Author: Your Friends
 
 feat: happily ever after
 
-Status: Merged Successfully
+Status: MERGED
 
 </div>
 
@@ -221,43 +579,8 @@ Status: Merged Successfully
 
 </div>
 
-<script>
-
-const lines=document.querySelectorAll(".line");
-
-let delay=500;
-
-lines.forEach((line,i)=>{
-
-    setTimeout(()=>{
-
-        line.classList.add("show");
-
-    },delay);
-
-    delay+=800;
-
-});
-
-setTimeout(()=>{
-
-    document.getElementById("bar1").style.width="100%";
-
-},5200);
-
-setTimeout(()=>{
-
-    document.getElementById("bar2").style.width="100%";
-
-},8600);
-
-setTimeout(()=>{
-
-    document.getElementById("message").style.display="block";
-
-},11500);
-
-</script>
+<!-- JavaScript érkezik a 2. részben -->
 
 </body>
+
 </html>
