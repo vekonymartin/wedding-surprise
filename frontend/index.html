@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeddingOS v2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div id="container">
+  <!-- ── Terminal window ── -->
+  <div id="terminal" role="main" aria-label="WeddingOS terminal">
+    <div id="titlebar">
+      <div class="dot red"   title="close"></div>
+      <div class="dot yellow" title="minimize"></div>
+      <div class="dot green"  title="maximize"></div>
+      <span id="wintitle">WeddingOS v2.0 — deploy_marriage.sh</span>
+    </div>
+
+    <div id="content" aria-live="polite">
+      <!-- Lines are injected by app.js -->
+    </div>
+
+    <!-- Easter-egg help overlay -->
+    <div id="helpbox" hidden>
+      <div id="helptable"></div>
+      <div id="helpclose" tabindex="0" role="button" aria-label="close help">× close</div>
+    </div>
+
+    <!-- Hidden command input (activated after SUCCESS) -->
+    <div id="cmdrow" hidden>
+      <span class="prompt-sign">$</span>
+      <input id="cmdinput" type="text" autocomplete="off" spellcheck="false"
+             aria-label="terminal input" placeholder="type 'help' for easter egg" />
+    </div>
+  </div>
+</div>
+
+<!-- ── Gratulation card overlay ── -->
+<div id="message" aria-hidden="true">
+  <canvas id="confetti-canvas"></canvas>
+  <div id="card">
+    <h1 id="cardTitle"></h1>
+    <div id="letter"></div>
+    <div id="commit"></div>
+    <div id="gitstatus"></div>
+  </div>
+</div>
+
+<!-- Boot sound (optional, muted by default) -->
+<audio id="bootsound" preload="auto" aria-hidden="true">
+  <!-- Base64-encoded short beep so no external asset needed -->
+  <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav" />
+</audio>
+
+<button id="soundtoggle" aria-label="toggle sound" title="toggle boot sound">🔇</button>
+
+<script src="confetti.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
